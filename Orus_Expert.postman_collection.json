@@ -1,0 +1,372 @@
+{
+	"info": {
+		"_postman_id": "264ab369-4b88-4c91-ba92-46dc03b8b4bc",
+		"name": "Orus_Expert",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29748217"
+	},
+	"item": [
+		{
+			"name": "User_Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"usuario2\",\r\n    \"email\": \"usuario@example.com\",\r\n    \"password\": \"contraseña2\",\r\n    \"cellphone\": \"1234567890\"\r\n}\r\n    ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/register/"
+			},
+			"response": []
+		},
+		{
+			"name": "User_Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"usuario1\",\r\n    \"password\": \"contraseña1\"\r\n}\r\n    ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/login/"
+			},
+			"response": []
+		},
+		{
+			"name": "User_Profile",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 6285444b0b635b2724d40cb3da67aaf34617bcc0",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/profile/"
+			},
+			"response": []
+		},
+		{
+			"name": "Users_List",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token a57767cec0aeb364eaecfb787c3720ec32c4175c",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/users/"
+			},
+			"response": []
+		},
+		{
+			"name": "User_Detail",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token a57767cec0aeb364eaecfb787c3720ec32c4175c",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/users/2/"
+			},
+			"response": []
+		},
+		{
+			"name": "User_Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 6285444b0b635b2724d40cb3da67aaf34617bcc0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"cambio@example.com\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/users/2/update/"
+			},
+			"response": []
+		},
+		{
+			"name": "User_Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 246087bc4862be9181ebca0b290cc17415c1bff8",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/users/3/delete/"
+			},
+			"response": []
+		},
+		{
+			"name": "Cedi_List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/cedis/"
+			},
+			"response": []
+		},
+		{
+			"name": "Cedi_Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token a57767cec0aeb364eaecfb787c3720ec32c4175c",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Cedi soacha\",\r\n    \"lat\": 4.600045108102677,\r\n    \"long\": -74.20100235651562\r\n}\r\n    ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/cedis/create/"
+			},
+			"response": []
+		},
+		{
+			"name": "Cedi_Detail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/cedis/4"
+			},
+			"response": []
+		},
+		{
+			"name": "Cedi_Update",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token a57767cec0aeb364eaecfb787c3720ec32c4175c",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Cedi Soacha\",\r\n    \"lat\": 4.610045108102677,\r\n    \"long\": -74.20100235651562\r\n}\r\n    ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/cedis/1/update/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"cedis",
+						"1",
+						"update",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cedi_Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token a57767cec0aeb364eaecfb787c3720ec32c4175c",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/cedis/1/delete/"
+			},
+			"response": []
+		},
+		{
+			"name": "Ships_List",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 6285444b0b635b2724d40cb3da67aaf34617bcc0",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/ships/"
+			},
+			"response": []
+		},
+		{
+			"name": "Ships_Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 9c8ccadd75bc69714af9e054e26d79a6b4efda8f",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Pedido otro lado\",\r\n    \"lat\": 4.671162,\r\n    \"long\": -74.154501\r\n}\r\n    ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/ships/create/"
+			},
+			"response": []
+		},
+		{
+			"name": "Ships_Detail",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 6285444b0b635b2724d40cb3da67aaf34617bcc0",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/ships/9/"
+			},
+			"response": []
+		},
+		{
+			"name": "Ships_Update",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 6285444b0b635b2724d40cb3da67aaf34617bcc0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Pedidoprimero\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/ships/1/update/"
+			},
+			"response": []
+		},
+		{
+			"name": "Ships_Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 6285444b0b635b2724d40cb3da67aaf34617bcc0",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/ships/2/delete/"
+			},
+			"response": []
+		},
+		{
+			"name": "metrics_By_User",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 6285444b0b635b2724d40cb3da67aaf34617bcc0",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/ships/metrics/total_by_user/"
+			},
+			"response": []
+		},
+		{
+			"name": "metrics_By_Cedi",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 6285444b0b635b2724d40cb3da67aaf34617bcc0",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/ships/metrics/by_cedi/"
+			},
+			"response": []
+		},
+		{
+			"name": "metrics_By_Fast_Normal",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 6285444b0b635b2724d40cb3da67aaf34617bcc0",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/ships/metrics/fast_normal/"
+			},
+			"response": []
+		}
+	]
+}
