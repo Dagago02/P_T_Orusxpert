@@ -1,32 +1,52 @@
-import googlemaps
+from google.maps import routing_v2
 from django.conf import settings
-from .models import Cedi
 import pandas as pd
 from .models import Ship, Cedi
 from django.db.models import Count
+import json
+import requests
 
-gmaps = googlemaps.Client(key=settings.GOOGLE_MAPS_API_KEY)
 
-"""Busca el CEDI más cercano usando Google Maps Routes API."""
+"""Devuelve el cedi mas cercano, tiempo y distancia."""
 def obtener_cedi_mas_cercano(lat, long):
     cedis = Cedi.objects.all().values("id", "lat", "long")
     if not cedis:
         return None, None, None  # No hay CEDIs disponibles
+    
+    google_api_key = settings.GOOGLE_MAPS_API_KEY
+    url = "https://routes.googleapis.com/directions/v2:computeRoutes"
     mejores_datos = None
+    
     for cedi in cedis:
-        origen = f"{cedi['lat']},{cedi['long']}"
-        destino = f"{lat},{long}"
-        result = gmaps.distance_matrix(origins=origen, destinations=destino, mode="driving")
-        if result["status"] == "OK":
-            row = result["rows"][0]["elements"][0]
-            if row["status"] == "OK":
-                distancia = row["distance"]["value"] / 1000  # Convertir metros a kilómetros
-                tiempo = row["duration"]["value"] / 60  # Convertir segundos a minutos    
-                if mejores_datos is None or distancia < mejores_datos[1]:  # Buscar el más cercano
-                    mejores_datos = (cedi["id"], distancia, tiempo)
+        payload = json.dumps({
+            "origin": {
+                "location": {"latLng": {"latitude": cedi["lat"], "longitude": cedi["long"]}}
+            },
+            "destination": {
+                "location": {"latLng": {"latitude": lat, "longitude": long}}
+            },
+            "travelMode": "DRIVE"
+        })
+        
+        headers = {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": google_api_key,
+            "X-Goog-FieldMask": "routes.duration,routes.distanceMeters"
+        }
+        
+        response = requests.post(url, data=payload, headers=headers)
+        res = response.json()
+        
+        if res.get("routes"):
+            route = res["routes"][0]
+            distancia = route["distanceMeters"] / 1000  
+            tiempo = route["duration"][:-1]  
+            tiempo = int(tiempo) / 60  
+            
+            if mejores_datos is None or distancia < mejores_datos[1]:
+                mejores_datos = (cedi["id"], distancia, tiempo)
+    
     return mejores_datos if mejores_datos else (None, None, None)
-
-
 
 
 """Devuelve un diccionario con la cantidad total de entregas por cada usuario."""

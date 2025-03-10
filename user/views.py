@@ -8,10 +8,16 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 
-
-#Registro de Usuario
+# Registro de Usuario
 @api_view(['POST'])
 def register(request):
+    """
+    Registra un nuevo usuario.
+    
+    **Método:** POST
+    **Body:** {"username": "", "password": "", "email": ""}
+    **Respuesta:** {"token": "", "user": {}}
+    """
     serializer = UserSerializer(data=request.data)
 
     if serializer.is_valid():
@@ -28,9 +34,16 @@ def register(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-#Iniciar sesión y obtener Token
+# Iniciar sesión y obtener Token
 @api_view(['POST'])
 def login(request):
+    """
+    Inicia sesión y obtiene el token de autenticación.
+    
+    **Método:** POST
+    **Body:** {"username": "", "password": ""}
+    **Respuesta:** {"token": "", "user": {}}
+    """
     user = get_object_or_404(User, username=request.data['username'])
     
     if not user.check_password(request.data['password']):
@@ -42,37 +55,68 @@ def login(request):
     return Response({"token": token.key, "user": serializer.data}, status=status.HTTP_200_OK)
 
 
-#Ver perfil del usuario autenticado
+# Ver perfil del usuario autenticado
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def profile(request):
+    """
+    Obtiene la información del usuario autenticado.
+    
+    **Método:** GET
+    **Autenticación:** Token
+    **Respuesta:** {"username": "", "email": ""}
+    """
     serializer = UserSerializer(request.user)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-#Listar todos los usuarios (Solo admins)
+# Listar todos los usuarios (Solo admins)
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAdminUser])
 def user_list(request):
+    """
+    Lista todos los usuarios (solo admins pueden acceder).
+    
+    **Método:** GET
+    **Autenticación:** Token (Admin)
+    **Respuesta:** [{"username": "", "email": ""}]
+    """
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAdminUser])
 def user_detail(request, user_id):
+    """
+    Obtiene los detalles de un usuario por ID (solo admins).
+    
+    **Método:** GET
+    **Autenticación:** Token (Admin)
+    **Respuesta:** {"username": "", "email": ""}
+    """
     user = get_object_or_404(User, id=user_id)
     serializer = UserSerializer(user)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-#Actualizar un usuario (Solo el dueño)
+# Actualizar un usuario (Solo el dueño)
 @api_view(['PUT', 'PATCH'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def user_update(request, user_id):
+    """
+    Actualiza los datos de un usuario (solo el dueño puede hacerlo).
+    
+    **Método:** PUT / PATCH
+    **Autenticación:** Token
+    **Body:** {"email": "", "password": ""}
+    **Respuesta:** {"message": "User updated successfully"}
+    """
     user = get_object_or_404(User, id=user_id)
     if request.user != user:
         return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
@@ -85,11 +129,18 @@ def user_update(request, user_id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-#Eliminar un usuario (Solo el dueño)
+# Eliminar un usuario (Solo el dueño)
 @api_view(['DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def user_delete(request, user_id):
+    """
+    Elimina un usuario (solo el dueño puede hacerlo).
+    
+    **Método:** DELETE
+    **Autenticación:** Token
+    **Respuesta:** {"message": "User deleted successfully"}
+    """
     user = get_object_or_404(User, id=user_id)
     if request.user != user:
         return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)

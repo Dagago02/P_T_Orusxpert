@@ -13,26 +13,39 @@ from .utils import (
     obtener_entregas_rapidas_y_normales
 )
 
-
-
-
-
-#Listar Ships del usuario autenticado
+# Listar Ships del usuario autenticado
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def ship_list(request):
-    """Retorna todas las entregas registradas por el usuario autenticado."""
+    """
+    Retorna todas las entregas registradas por el usuario autenticado.
+    
+    **Método:** GET
+    **Autenticación:** Requerida
+    """
     ships = Ship.objects.filter(user=request.user)
     serializer = ShipSerializer(ships, many=True)
     return Response(serializer.data)
 
 
-#Crear un Ship (Solo usuarios autenticados)
+# Crear un Ship (Solo usuarios autenticados)
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def ship_create(request):
+    """
+    Crea una nueva entrega (Ship).
+    
+    **Método:** POST
+    **Autenticación:** Requerida
+    **Body requerido:**
+    {
+        "name": string, # Nombre del envio
+        "lat": float,  # Latitud de la entrega
+        "long": float  # Longitud de la entrega
+    }
+    """
     user = request.user
     data = request.data.copy()
     lat = data.get("lat")
@@ -53,21 +66,33 @@ def ship_create(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-#Obtener un Ship específico (Disponible para todos)
+# Obtener un Ship específico (Disponible para todos)
 @api_view(['GET'])
 @permission_classes([AllowAny])  
 def ship_detail(request, ship_id):
+    """
+    Obtiene los detalles de una entrega específica.
+    
+    **Método:** GET
+    **Autenticación:** No requerida
+    """
     ship = get_object_or_404(Ship, id=ship_id)
     serializer = ShipSerializer(ship)
     return Response(serializer.data)
 
 
-#Actualizar un Ship (Solo el usuario que lo creó)
+# Actualizar un Ship (Solo el usuario que lo creó)
 @api_view(['PUT', 'PATCH'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def ship_update(request, ship_id):
+    """
+    Actualiza los datos de una entrega.
+    
+    **Método:** PUT/PATCH
+    **Autenticación:** Requerida (Solo el usuario creador)
+    **Body requerido:** Datos a actualizar
+    """
     ship = get_object_or_404(Ship, id=ship_id)
     if request.user != ship.user:
         return Response({'error': 'Unauthorized: You can only edit your own Ships.'}, status=status.HTTP_403_FORBIDDEN)
@@ -78,40 +103,61 @@ def ship_update(request, ship_id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-#Eliminar un Ship (Solo el usuario que lo creó)
+# Eliminar un Ship (Solo el usuario que lo creó)
 @api_view(['DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def ship_delete(request, ship_id):
+    """
+    Elimina una entrega.
+    
+    **Método:** DELETE
+    **Autenticación:** Requerida (Solo el usuario creador)
+    """
     ship = get_object_or_404(Ship, id=ship_id)
-
     if request.user != ship.user:
         return Response({'error': 'Unauthorized: You can only delete your own Ships.'}, status=status.HTTP_403_FORBIDDEN)
-
     ship.delete()
     return Response({'message': f'Ship {ship.name} deleted successfully'}, status=status.HTTP_200_OK)
 
 
-#Cantidad total de entregas creadas por cada usuario
+# Cantidad total de entregas creadas por cada usuario
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def total_entregas_por_usuario(request):
+    """
+    Retorna la cantidad total de entregas creadas por cada usuario.
+    
+    **Método:** GET
+    **Autenticación:** No requerida
+    """
     data = obtener_entregas_por_usuario()
     return Response(data, status=status.HTTP_200_OK)
 
 
-#Métricas de entregas por CEDI
+# Métricas de entregas por CEDI
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def metricas_entregas_por_cedi(request):
+    """
+    Retorna métricas de entregas agrupadas por CEDI.
+    
+    **Método:** GET
+    **Autenticación:** No requerida
+    """
     data = obtener_metricas_por_cedi()
     return Response(data, status=status.HTTP_200_OK)
 
 
-#Cantidad de entregas "Rápidas" y "Normales" por CEDI
+# Cantidad de entregas "Rápidas" y "Normales" por CEDI
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def entregas_rapidas_normales_por_cedi(request):
+    """
+    Retorna la cantidad de entregas rápidas y normales por cada CEDI.
+    
+    **Método:** GET
+    **Autenticación:** No requerida
+    """
     data = obtener_entregas_rapidas_y_normales()
     return Response(data, status=status.HTTP_200_OK)
