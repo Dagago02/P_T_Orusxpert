@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de la API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Documentación de la API</h1>
+    
+    <h2>1. Registro de Usuario</h2>
+    <p><strong>URL:</strong> /api/register/</p>
+    <p><strong>Método:</strong> POST</p>
+    <p><strong>Autenticación:</strong> No requerida</p>
+    <p><strong>Body (JSON):</strong></p>
+    <pre>
+{
+    "username": "usuario123",
+    "email": "usuario@example.com",
+    "password": "contraseña123",
+    "cellphone": "1234567890"
+}
+    </pre>
+
+    <h2>2. Inicio de Sesión</h2>
+    <p><strong>URL:</strong> /api/login/</p>
+    <p><strong>Método:</strong> POST</p>
+    <p><strong>Autenticación:</strong> No requerida</p>
+    <p><strong>Body (JSON):</strong></p>
+    <pre>
+{
+    "username": "usuario123",
+    "password": "contraseña123"
+}
+    </pre>
+
+    <h2>3. Crear Ship</h2>
+    <p><strong>URL:</strong> /api/ship/create/</p>
+    <p><strong>Método:</strong> POST</p>
+    <p><strong>Autenticación:</strong> Requiere Token</p>
+    <p><strong>Headers:</strong></p>
+    <pre>
+Authorization: Token {tu_token}
+    </pre>
+    <p><strong>Body (JSON):</strong></p>
+    <pre>
+{
+    "name": "Pedido1",
+    "lat": 10.123456,
+    "long": -75.123456
+}
+    </pre>
+
+    <h2>4. Listar Ships</h2>
+    <p><strong>URL:</strong> /api/ships/</p>
+    <p><strong>Método:</strong> GET</p>
+    <p><strong>Autenticación:</strong> Requiere Token</p>
+    <p><strong>Headers:</strong></p>
+    <pre>
+Authorization: Token {tu_token}
+    </pre>
+
+    <h2>5. Actualizar Ship</h2>
+    <p><strong>URL:</strong> /api/ship/{id}/</p>
+    <p><strong>Método:</strong> PUT</p>
+    <p><strong>Autenticación:</strong> Requiere Token (Solo el creador puede modificarlo)</p>
+    <p><strong>Headers:</strong></p>
+    <pre>
+Authorization: Token {tu_token}
+    </pre>
+    <p><strong>Body (JSON):</strong></p>
+    <pre>
+{
+    "name": "Pedido Actualizado"
+}
+    </pre>
+
+    <h2>6. Eliminar Ship</h2>
+    <p><strong>URL:</strong> /api/ship/{id}/</p>
+    <p><strong>Método:</strong> DELETE</p>
+    <p><strong>Autenticación:</strong> Requiere Token (Solo el creador puede eliminarlo)</p>
+    <p><strong>Headers:</strong></p>
+    <pre>
+Authorization: Token {tu_token}
+    </pre>
+
+    <h2>7. Crear Cedi</h2>
+    <p><strong>URL:</strong> /api/cedi/create/</p>
+    <p><strong>Método:</strong> POST</p>
+    <p><strong>Autenticación:</strong> Requiere Token (Solo Admins)</p>
+    <p><strong>Headers:</strong></p>
+    <pre>
+Authorization: Token {tu_token}
+    </pre>
+    <p><strong>Body (JSON):</strong></p>
+    <pre>
+{
+    "name": "Cedi 1",
+    "lat": 10.123456,
+    "long": -75.123456
+}
+    </pre>
+
+    <h2>8. Listar Cedis</h2>
+    <p><strong>URL:</strong> /api/cedis/</p>
+    <p><strong>Método:</strong> GET</p>
+    <p><strong>Autenticación:</strong> No requerida</p>
+
+    <h2>9. Obtener Métricas de Entrega</h2>
+    <p><strong>URL:</strong> /api/cedi/metrics/</p>
+    <p><strong>Método:</strong> GET</p>
+    <p><strong>Autenticación:</strong> No requerida</p>
+
+</body>
+</html>
